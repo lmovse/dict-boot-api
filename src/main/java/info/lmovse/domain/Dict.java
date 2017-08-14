@@ -44,7 +44,7 @@ public class Dict {
     @JSONField(serialize = false)
     private Date gmtModified;
 
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "dict_id")
     private Set<Word> words;
 

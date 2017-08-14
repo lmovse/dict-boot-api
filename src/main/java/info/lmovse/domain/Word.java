@@ -1,7 +1,6 @@
 package info.lmovse.domain;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -28,21 +27,22 @@ public class Word implements Serializable {
     private String pos;
     private String etymology;
 
+    @Column(name = "query_account")
+    private Long queryAccount;
+
     @Column(name = "gmt_create")
-    @JsonIgnore
     @JSONField(serialize = false)
     private Date gmtCreate;
 
-    @JsonIgnore
     @Column(name = "gmt_modified")
     @JSONField(serialize = false)
     private Date gmtModified;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "word_id")
     private Set<Sense> senses;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "word_id")
     private Set<Phrase> phrases;
 
@@ -129,6 +129,14 @@ public class Word implements Serializable {
 
     public void setPhrases(Set<Phrase> phrases) {
         this.phrases = phrases;
+    }
+
+    public Long getQueryAccount() {
+        return queryAccount;
+    }
+
+    public void setQueryAccount(Long queryAccount) {
+        this.queryAccount = queryAccount;
     }
 
     @Override

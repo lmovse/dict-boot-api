@@ -3,6 +3,14 @@ body {
     color: white;
 }
 
+@media (min-width: 410px) {
+    body {
+        background-color: lavender;
+        color: white;
+        width: 400px;
+    }
+}
+
 .edit-text {
     height: 35%;
     background-color: #5f9ea0;
@@ -42,21 +50,21 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
 
 #trans {
     color: #2f2f2f;
-    padding: 16px;
+    padding: 16px 16px 0 16px;
     margin: 10px;
     background-color: pink;
     border-radius: 6px;
-    min-height: 80px;
+    min-height: 0;
     height: auto;
 }
 
 #phrase {
-    padding: 16px;
+    padding: 16px 16px 0 16px;
     margin: 10px;
     color: #2f2f2f;
     background-color: burlywood;
     border-radius: 6px;
-    min-height: 180px;
+    min-height: 0;
     height: auto;
 }
 

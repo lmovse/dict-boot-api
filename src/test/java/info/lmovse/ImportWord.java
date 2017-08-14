@@ -22,7 +22,7 @@ import java.util.Set;
  * Created by lmovse on 2017/8/4.
  * Tomorrow is a nice day.
  */
-public class ImportWord {
+public class ImportWord extends DictBootApiApplicationTests {
 
     private SessionFactory sessionFactory;
 

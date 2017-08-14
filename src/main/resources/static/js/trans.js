@@ -1,20 +1,22 @@
-    /**
-        * Created by lmovse on 2017/8/7.
-        * Tomorrow is a nice day.
-        */
-    var edit = $(".input-text")[0];
+/**
+ * Created by lmovse on 2017/8/7.
+ * Tomorrow is a nice day.
+ */
+var edit = $(".input-text")[0];
 var $trans = $("#trans");
 var $base = $("#base");
+var $word = $("#word");
 var $phrase = $("#phrase");
 var $content = $(".content");
 var $spinner = $(".spinner");
+var $count = $("#count");
 $(function () {
     edit.focus();
 });
 $(".button").on("click", function () {
     $content.hide();
     $spinner.fadeIn('slow');
-    $.get("query?q=" + edit.value + "&dictId=23", function (data) {
+    $.get("q?q=" + edit.value + "&dictId=23", function (data) {
         if (data.code !== 200) {
             alert(data.message);
             return;
@@ -37,20 +39,19 @@ $(".button").on("click", function () {
             })
         });
         if (data.data.etymology === "") {
-            $base.html(data.data.wordName
+            $word.html(data.data.wordName
+                + "<br><br>"
+                + data.data.pron
+                + "<br><br>");
+        } else {
+            $word.html(data.data.wordName
                 + "<br><br>"
                 + data.data.pron
                 + "<br><br>"
                 + data.data.etymology
                 + "<br><br>");
-            $trans.html(colloc);
         }
-        $base.html(data.data.wordName
-            + "<br><br>"
-            + data.data.pron
-            + "<br><br>"
-            + data.data.etymology
-            + "<br><br>");
+        $count.text(data.data.queryAccount);
         $trans.html(colloc);
         $phrase.html(collexa);
     });

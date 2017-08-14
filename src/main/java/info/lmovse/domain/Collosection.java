@@ -21,7 +21,7 @@ public class Collosection implements Serializable {
     private Integer id;
     private String secheading;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "collosection_id")
     private Set<Collocate> collocates;
 

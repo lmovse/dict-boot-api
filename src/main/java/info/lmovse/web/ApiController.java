@@ -25,7 +25,7 @@ public class ApiController {
     @Resource
     private IWordService wordService;
 
-    @RequestMapping(value = "/query", produces="application/json; charset=utf-8")
+    @RequestMapping(value = "/q", produces="application/json; charset=utf-8")
     @ResponseBody
     public Result getWord(@RequestParam String q, @RequestParam Long dictId) {
         Word word = wordService.findWordByDictAndWordName(q, dictId);
@@ -36,15 +36,9 @@ public class ApiController {
      * 跳转到页面查词界面
      * @return 页面资源
      */
-    @RequestMapping("/q")
+    @RequestMapping("/")
     public String quryIndex() {
         return "index";
-    }
-
-    @RequestMapping("/")
-    @ResponseBody
-    public Result index() {
-        return ResultFactory.getSuccesResult("欢迎使用本 api !");
     }
 
     /**

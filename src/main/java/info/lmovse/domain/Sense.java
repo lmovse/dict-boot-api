@@ -21,7 +21,7 @@ public class Sense implements Serializable {
     private Integer id;
     private String def;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "sense_id")
     private Set<Collosection> collosections;
 
