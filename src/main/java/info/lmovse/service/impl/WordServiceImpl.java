@@ -37,7 +37,13 @@ public class WordServiceImpl implements IWordService {
 
         // 判断 redis 中是否有对应的 key ，有的话直接取值
         if (hashOps.hasKey("dict", wordName)) {
-            return (Word) hashOps.get("dict", wordName);
+            word = (Word) hashOps.get("dict", wordName);
+            word.setQueryAccount(word.getQueryAccount() + 1);
+            hashOps.put("dict", wordName, word);
+            if (word.getQueryAccount() % 1000 == 0) {
+                wordRepository.save(word);
+            }
+            return word;
         }
 
         if (hashOps.hasKey("dict", wordName + 1)) {
@@ -54,8 +60,7 @@ public class WordServiceImpl implements IWordService {
                 throw new RuntimeException("暂无此记录！");
             }
         }
-//        hashOps.put("dict", wordName, word);
-        word.setQueryAccount(word.getQueryAccount() + 1);
+        hashOps.put("dict", wordName, word);
         wordRepository.save(word);
         return word;
     }

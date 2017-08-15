@@ -4,7 +4,6 @@
  */
 var edit = $(".input-text")[0];
 var $trans = $("#trans");
-var $base = $("#base");
 var $word = $("#word");
 var $phrase = $("#phrase");
 var $content = $(".content");
@@ -13,10 +12,11 @@ var $count = $("#count");
 $(function () {
     edit.focus();
 });
+
 $(".button").on("click", function () {
     $content.hide();
     $spinner.fadeIn('slow');
-    $.get("q?q=" + edit.value + "&dictId=23", function (data) {
+    $.get("q?q=" + edit.value, function (data) {
         if (data.code !== 200) {
             alert(data.message);
             return;
@@ -41,18 +41,26 @@ $(".button").on("click", function () {
         if (data.data.etymology === "") {
             $word.html(data.data.wordName
                 + "<br><br>"
-                + data.data.pron
-                + "<br><br>");
+                + (data.data.pron === '' ? '' : data.data.pron + '<br><br>'));
         } else {
             $word.html(data.data.wordName
-                + "<br><br>"
-                + data.data.pron
-                + "<br><br>"
+                + '<br><br>'
+                + (data.data.pron === '' ? '' : data.data.pron + '<br><br>')
                 + data.data.etymology
-                + "<br><br>");
+                + '<br><br>');
         }
         $count.text(data.data.queryAccount);
-        $trans.html(colloc);
-        $phrase.html(collexa);
+        if (colloc === '') {
+            $trans.hide();
+        } else {
+            $trans.show();
+            $trans.html(colloc);
+        }
+        if (collexa === '') {
+            $phrase.hide();
+        } else {
+            $phrase.show();
+            $phrase.html(collexa)
+        }
     });
 });

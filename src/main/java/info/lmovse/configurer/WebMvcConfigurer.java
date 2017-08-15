@@ -17,7 +17,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.servlet.ServletException;
@@ -62,19 +61,6 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     }
 
     /**
-     * 配置静态处理文件
-     * 这里配置无效，因为默认配置了 /static/**，需要在 properties 中修改
-     * 只能配置自定义文件夹
-     *
-     * @param registry 注册资源处理器
-     */
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/static/");
-    }
-
-    /**
      * 统一异常处理
      *
      * @param exceptionResolvers mvc exception handlers
@@ -92,7 +78,7 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
                 } else if (e instanceof ServletException) {
                     result.setCode(ResultCode.FAIL).setMessage(e.getMessage());
                 } else {
-                    result.setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage(" 接口 [" + request.getRequestURI() + "] 内部错误，请联系管理员 ");
+                    result.setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage(e.getMessage());
                     String message;
                     if (handler instanceof HandlerMethod) {
                         HandlerMethod handlerMethod = (HandlerMethod) handler;
@@ -109,7 +95,6 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
                 responseResult(response, result);
                 return new ModelAndView();
             }
-
         });
     }
 

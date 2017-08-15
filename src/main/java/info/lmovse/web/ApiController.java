@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -27,8 +26,8 @@ public class ApiController {
 
     @RequestMapping(value = "/q", produces="application/json; charset=utf-8")
     @ResponseBody
-    public Result getWord(@RequestParam String q, @RequestParam Long dictId) {
-        Word word = wordService.findWordByDictAndWordName(q, dictId);
+    public Result getWord(String q) {
+        Word word = wordService.findWordByDictAndWordName(q, 23L);
         return ResultFactory.getSuccesResult(word);
     }
 
@@ -37,7 +36,7 @@ public class ApiController {
      * @return 页面资源
      */
     @RequestMapping("/")
-    public String quryIndex() {
+    public String queryIndex() {
         return "index";
     }
 
