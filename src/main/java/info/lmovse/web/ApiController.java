@@ -4,10 +4,7 @@ import info.lmovse.domain.Word;
 import info.lmovse.service.IWordService;
 import info.lmovse.util.Result;
 import info.lmovse.util.ResultFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -19,8 +16,6 @@ import javax.annotation.Resource;
  */
 @Controller
 public class ApiController {
-    private Logger logger = LoggerFactory.getLogger(ApiController.class);
-
     @Resource
     private IWordService wordService;
 
@@ -38,17 +33,6 @@ public class ApiController {
     @RequestMapping("/")
     public String queryIndex() {
         return "index";
-    }
-
-    /**
-     * 统一异常处理方法
-     * @return 异常信息
-     */
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    public Result exceptionHandler(Exception e) {
-        logger.error("未捕捉异常，异常详情：{}", e.getMessage(), e);
-        return ResultFactory.getFailResult(e.getMessage());
     }
 
 }

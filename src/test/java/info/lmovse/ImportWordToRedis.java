@@ -1,7 +1,7 @@
 package info.lmovse;
 
 import info.lmovse.domain.Word;
-import info.lmovse.domain.WordRepository;
+import info.lmovse.repository.WordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
