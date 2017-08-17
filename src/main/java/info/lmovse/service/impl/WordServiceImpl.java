@@ -3,6 +3,8 @@ package info.lmovse.service.impl;
 import info.lmovse.domain.Word;
 import info.lmovse.repository.WordRepository;
 import info.lmovse.service.IWordService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -17,6 +19,7 @@ import javax.annotation.Resource;
  */
 @Service
 public class WordServiceImpl implements IWordService {
+    private Logger logger = LoggerFactory.getLogger(WordServiceImpl.class);
 
     @Autowired
     private WordRepository wordRepository;
@@ -38,6 +41,7 @@ public class WordServiceImpl implements IWordService {
             updateQueryCounts(wordName, word);
             return word;
         }
+
         // redis 中没有缓存该单词，查询数据库
         word = wordRepository.findWordByDictAndAndWordName(wordName, dictId);
         if (word == null) {
@@ -46,19 +50,32 @@ public class WordServiceImpl implements IWordService {
                 throw new RuntimeException("暂无此记录！");
             }
         }
-        hashOps.put("dict", wordName, word);
         wordRepository.save(word);
+        putToRedis(wordName, word);
         return word;
+    }
+
+    // 保存到 redis 中
+    private void putToRedis(String wordName, Word word) {
+        try {
+            hashOps.put("dict", wordName, word);
+        } catch (Exception e) {
+            logger.error("缓存失败！失败详情：", e.getMessage());
+        }
     }
 
     // 从 redis 中获取值
     private Word getWordFromRedis(String wordName) {
         Word word = null;
-        if (hashOps.hasKey("dict", wordName)) {
-            word = (Word) hashOps.get("dict", wordName);
-        } else if (hashOps.hasKey("dict", wordName + 1)) {
-            word = (Word) hashOps.get("dict", wordName + 1);
-            word.setWordName(wordName);
+        try {
+            if (hashOps.hasKey("dict", wordName)) {
+                word = (Word) hashOps.get("dict", wordName);
+            } else if (hashOps.hasKey("dict", wordName + 1)) {
+                word = (Word) hashOps.get("dict", wordName + 1);
+                word.setWordName(wordName);
+            }
+        } catch (Exception e) {
+            logger.error("查询缓存失败！失败详情：", e.getMessage());
         }
         return word;
     }
@@ -66,7 +83,7 @@ public class WordServiceImpl implements IWordService {
     // 更新查询次数
     private void updateQueryCounts(String wordName, Word wordR) {
         wordR.setQueryAccount(wordR.getQueryAccount() + 1);
-        hashOps.put("dict", wordName, wordR);
+        putToRedis(wordName, wordR);
         if (wordR.getQueryAccount() % 1000 == 0) {
             wordRepository.save(wordR);
         }
