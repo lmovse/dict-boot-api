@@ -35,6 +35,8 @@ public class WordServiceImpl implements IWordService {
         if (StringUtils.isEmpty(wordName) || StringUtils.isEmpty(dictId)) {
             throw new RuntimeException("必要参数不能为空！");
         }
+
+        // 从 redis 中查询，有数据的话更新查询次数后返回
         Word word = null;
         word = getWordFromRedis(wordName);
         if (word != null) {
@@ -50,6 +52,8 @@ public class WordServiceImpl implements IWordService {
                 throw new RuntimeException("暂无此记录！");
             }
         }
+
+        // 更新查询次数并放入 redis 中
         wordRepository.save(word);
         putToRedis(wordName, word);
         return word;
@@ -84,7 +88,7 @@ public class WordServiceImpl implements IWordService {
     private void updateQueryCounts(String wordName, Word wordR) {
         wordR.setQueryAccount(wordR.getQueryAccount() + 1);
         putToRedis(wordName, wordR);
-        if (wordR.getQueryAccount() % 1000 == 0) {
+        if (wordR.getQueryAccount() % 10 == 0) {
             wordRepository.save(wordR);
         }
     }

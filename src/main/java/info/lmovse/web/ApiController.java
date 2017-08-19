@@ -22,10 +22,6 @@ public class ApiController {
     @RequestMapping(value = "/q")
     public Result getWord(String q, HttpServletResponse response) {
         Word word = wordService.findWordByDictAndWordName(q, 23L);
-        // 允许跨域
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "POST");
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         return ResultFactory.getSuccesResult(word);
     }
 

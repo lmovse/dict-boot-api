@@ -5,6 +5,4 @@
 
 由于单词的查询有多重嵌套，因此使用了 redis 作为缓存，大大提高了访问速度
 
-have a nice day!
-
-网址：[Mouse 查词](http://www.lmovse.info:427/dict/q)
+网址：[Mouse 查词](http://www.lmovse.info:427/dict)
