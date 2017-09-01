@@ -1,0 +1,12 @@
+version: '3'
+services:
+  dict:
+    build: .
+    ports:
+     - "427:8080"
+  redis:
+    image: "redis:alpine"
+  mysql:
+    image: "mysql:alpine"
+    ports:
+    - "3316:3306"

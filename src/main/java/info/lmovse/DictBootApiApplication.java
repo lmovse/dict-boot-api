@@ -14,7 +14,7 @@ public class DictBootApiApplication extends SpringBootServletInitializer {
 	}
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(DictBootApiApplication.class, args);
 	}
+
 }
